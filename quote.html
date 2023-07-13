@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Quote Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0a0a0a;
+         
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+       
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .quote {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 36px;
+            background-image: url("https://s-media-cache-ak0.pinimg.com/originals/5d/e4/72/5de4722f6f7e9130f9f1f6a0ced265ab.jpg");
+        }
+.quote:hover{
+     color: #ffffff;
+            background-image: url("https://th.bing.com/th/id/OIP.CXgZxKxOAaT7Lk377KsVqgHaEo?pid=ImgDet&rs=1");
+}
+        .quote p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+   
+    <h1> Quote Generator</h1>
+    <div class="container">
+        <input type="text" id="categoryInput" placeholder="Enter a category">
+        <button onclick="fetchRandomQuote()">Generate Quote</button>
+        <div class="quote" id="quoteContainer">
+            
+        </div>
+    </div>
+
+    <script>
+        function fetchRandomQuote() {
+            const category = document.getElementById('categoryInput').value.trim();
+            const apiUrl = `https://api.quotable.io/random?category=${category}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.content && data.author) {
+                        const quote = data.content;
+                        const author = data.author;
+
+                        document.getElementById('quoteContainer').innerHTML = `
+                            <q>${quote}</q>
+                            <p>- ${author}</p>
+                        `;
+                    } else {
+                        document.getElementById('quoteContainer').innerHTML = '<p>No quotes found for the specified category.</p>';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('quoteContainer').innerHTML = '<p>An error occurred while fetching the quote. Please try again later.</p>';
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+</html>
